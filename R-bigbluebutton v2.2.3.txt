@@ -1,0 +1,1209 @@
+6-05-2020
+Section 1,2,3,4,5,6
+
+Section 1
+$ cat /etc/default/locale
+$ sudo apt-get install language-pack-en
+$ sudo update-locale LANG=en_US.UTF-8
+
+$ cat /etc/default/locale
+
+$ sudo systemctl show-environment
+$ sudo systemctl set-environment LANG=en_US.UTF-8
+$ sudo systemctl show-environment
+
+$cat /etc/lsb-release
+$uname -m
+$ ip addr | grep inet6
+$uname -r
+$cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l
+
+
+$ sudo apt-get update
+$sudo apt-get install software-properties-common
+$sudo add-apt-repository universe
+$sudo add-apt-repository ppa:certbot/certbot
+$sudo mkdir -p /etc/nginx/ssl
+$sudo openssl dhparam -out /etc/nginx/ssl/dhp-4096.pem 4096
+
+Update your server
+$ grep "multiverse" /etc/apt/sources.list
+
+$sudo add-apt-repository ppa:bigbluebutton/support -y
+$sudo add-apt-repository ppa:rmescandon/yq -y
+$sudo add-apt-repository ppa:libreoffice/ppa
+
+$sudo apt-get update
+$ sudo apt-get dist-upgrade
+
+$wget -qO - https://www.mongodb.org/static/pgp/server-3.4.asc | sudo apt-key add -
+$echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+$sudo apt-get update
+$sudo apt-get install -y mongodb-org curl
+
+$curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+$sudo apt-get install -y nodejs
+
+end of section 1
+
+///////////////////////////////////////////
+//////////    section 2  ////////////////
+////////////////////////////////////////
+
+https://linuxize.com/post/how-to-install-nginx-on-ubuntu-16-04/
+Prerequisites before installing nginx
+Before starting with the tutorial, make sure you are logged in as a user with sudo privileges and you don’t have Apache or any other service running on port 80 or 443.
+$sudo apt-get update
+$sudo apt install nginx
+$sudo systemctl status nginx
+$sudo nginx -v
+
+$sudo ufw allow 'Nginx Full'
+$sudo ufw status
+
+Note: If your server is behind a firewall already – such as running within your company or on an EC2 instance behind a Amazon Security Group – and the firewall is enforcing the above restrictions, you don’t need a second firewall and can skip this section.
+But if you want to try other methods of creating a firewall you can do the ufw commands below
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04
+
+$sudo ufw enable
+$sudo ufw allow ssh
+$sudo ufw allow 80
+$sudo ufw allow 443
+$sudo ufw allow 16384:32768/udp
+sudo ufw allow 'Nginx Full'
+
+https://linuxize.com/post/how-to-install-nginx-on-ubuntu-16-04/
+$sudo apt install software-properties-common
+$sudo add-apt-repository ppa:nginx/stable
+$sudo apt update
+$sudo apt install nginx
+
+Setting up certbot and getting SSL Certificate
+https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx.html
+$sudo apt-get update
+$sudo apt-get install software-properties-common
+$sudo add-apt-repository universe
+$sudo add-apt-repository ppa:certbot/certbot
+$sudo apt-get install certbot python3-certbot-nginx
+$sudo certbot --nginx
+
+make sure that the email addresses used here are not used in other instances
+answer the following questions (email add, domain names to register)
+
+"2" redirect HTTP to HTTPS
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/mywishlake.com/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/mywishlake.com/privkey.pem
+   Your cert will expire on 2020-09-03. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot again
+   with the "certonly" option. To non-interactively renew *all* of
+   your certificates, run "certbot renew"
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+
+Your account credentials have been saved in your Certbot
+   configuration directory at /etc/letsencrypt. You should make a
+   secure backup of this folder now. This configuration directory will
+   also contain certificates and private keys obtained by Certbot so
+   making regular backups of this folder is ideal.
+
+
+ end of section 2 
+
+/////////////////////////////////////////////////////////
+////////// Section 3/////////////////////////////////////
+////////////////////////////////////////////////////////
+Reconfiguring SSL certificates to avoid misused or duplicates of certificates
+$sudo certbot --nginx
+answer the questions
+if you want to change the certificate
+Use command below
+$sudo certbot certonly --cert-name example.com -d example.com
+$sudo certbot certonly --cert-name mywishlake.com -d mywishlake.com
+
+https://docs.bigbluebutton.org/2.2/install.html#minimum-server-requirements
+Install apt-get key for BigBlueButton repository
+$wget https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc -O- | sudo apt-key add -
+$echo "deb https://ubuntu.bigbluebutton.org/xenial-22/ bigbluebutton-xenial main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list
+$sudo apt-get update
+
+Install bigbluebutton
+$sudo apt-get install bigbluebutton
+Select 'Ok' press right arrow then enter
+Accept the EULA
+$sudo apt-get install bbb-html5
+
+customize.html#make-the-html5-client-default
+https://docs.bigbluebutton.org/2.2/customize.html#make-the-html5-client-default
+
+$sudo nano /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+edit the file
+# Force all attendees to join the meeting using the HTML5 client
+attendeesJoinViaHTML5Client=true
+
+# Force all moderators to join the meeting using the HTML5 client
+moderatorsJoinViaHTML5Client=true
+
+$sudo apt-get dist-upgrade
+$sudo bbb-conf --restart
+it should print 
+---------------------------
+Potential problems
+..........................
+---------------------------
+Meaning no problem was detected
+
+$sudo bbb-conf --check
+$sudo bbb-conf --status
+
+if you type the said IPv4 in the $sudo bbb-conf --check in the browser url box, it will not direct you to any site. When you visit the domain you used earlier it will direct you to the nginx welcome page even if BBB is already installed, it's because it is the default landing page set in. To configure default landing page:
+$sudo nano /etc/nginx/sites-enabled/default
+change the root path to /var/www/bigbluebutton-default; #don't forget the semi-colon
+
+the BigBlueButton page should now show when you enter the domain you used
+ 
+
+Install API demos (optional)
+$sudo apt-get install bbb-demo
+
+$sudo bbb-conf --check
+it will print 
+Warning: The API demos are installed and accessible from:
+#
+#    http://172.31.13.186
+#
+# and
+#
+#    http://172.31.13.186/demo/demo1.jsp
+
+Assign a hostname
+$ping EXTERNAL_HOST_NAME
+$ping mywishlake.com
+
+If the hostname is resolving to the server’s IP address (or the IP address of the firewall), next use the BigBlueButton configuration utility bbb-conf to update BigBlueButton’s configuration files to use this hostname.
+
+$sudo bbb-conf --setip HOSTNAME
+$sudo bbb-conf --setip mywishlake.com
+
+now when you visit mywishlake.com
+and enter a name and click join
+it will show an error page
+Now enter mywishlake.com/demo/demo.jsp
+It will bring you to a new page
+-----------------------------------
+HTTP Status 404 - /demo/demo.jsp   --
+-----------------------------------
+Why? The BigBlueButton server comes ready to list to API calls, but doesn’t have a front-end installed by default. You can easily install the API demos to test the server.
+
+
+Configure SSL on your BigBlueButton server
+before doing this make sure you have a domain and a subdomain ready with same? IPv4
+$sudo sudo certbot certonly --cert-name mywishlake.com -d mywishlake.com,bbb.mywishlake.com
+$sudo bbb-conf --setip mywishlake.com
+
+Using Let’s EncryptAnchor link for: using lets encrypt
+$sudo certbot --webroot -w /var/www/bigbluebutton-default/ -d mywishlake.com certonly
+$sudo ls /etc/letsencrypt/live/mywishlake.com/
+
+to view the certificates
+enter as root user
+$sudo -i
+cd /etc/letsencrypt/live/mywishlake.com
+
+
+  
+Automatically renewed
+The Let’s Encrypte certificates are good for 90 days and can be automatically renewed. To automatically request a renewal once a week, edit the crontab file for root.
+
+$ sudo crontab -e
+
+And add the following two lines at the bottom:
+
+30 2 * * 1 /usr/bin/certbot renew >> /var/log/le-renew.log
+35 2 * * 1 /bin/systemctl reload nginx
+These two directives will execute the certbot renew command every Monday at 2:30 am, and then reload Nginx at 2:35am (so the renewed certificate will be used). The output will be piped to a log file located at /var/log/le-renewal.log, so you can always check it later.
+
+Configure nginx to use HTTPS
+And now create the private key file for nginx to use (replace the hostname in the filename with your own). In addition, fix the permissions so that only root can read the private key:
+as root user
+$cd /etc/letsencrypt/live/mywishlake.com
+$sudo nano privkey.pem
+maximize the putty window to see all the code in privkey.pem
+Copy it in a text editor
+$cat >/etc/nginx/ssl/mywishlake.com.key <<'END'
+Paste the contents of your key file here
+END
+
+$chmod 0600 /etc/nginx/ssl/mywishlake.com.key
+
+Add the certificate file to nginx/ssl. 
+Open the file first
+$cd /etc/letsencrypt/live/mywishlake.com
+$ls -lsa
+the signed certificate from the CA is the "cert.pem" file
+while the each intermediate certificate provided by the CA (but do not include root) is the "fullchain.pem" file, the root is the signed certificate by the CA
+$sudo nano cert.pem
+copy the contents
+$sudo nano fullchain.pem
+copy contents
+
+$cat >/etc/nginx/ssl/mywishlake.com.crt <<'END'
+Paste (in order) the contents of the following files:
+  1. The signed certificate from the CA
+  2. In order, each intermediate certificate provided by the CA (but do not include the root).
+END
+
+Now we can edit the nginx configuration to use SSL. Edit the file /etc/nginx/sites-available/bigbluebutton to add the marked lines. Ensure that you’re using the correct filenames to match the certificate and key files you created above.
+
+paste this after
+-------------------------- 
+server {
+  server_name bigbluebutton.example.com;
+  listen 80;
+  listen [::]:80;
+---------------------------
+
+listen 443 ssl;
+  listen [::]:443 ssl;
+  ssl_certificate /etc/letsencrypt/live/mywishlake.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/mywishlake.com/privkey.pem;
+  ssl_session_cache shared:SSL:10m;
+  ssl_session_timeout 10m;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers "ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS:!AES256";
+  ssl_prefer_server_ciphers on;
+  ssl_dhparam /etc/nginx/ssl/dhp-4096.pem;
+
+
+Configure FreeSWITCH for using SSL
+
+Testing the firewall
+https://docs.bigbluebutton.org/2.2/configure-firewall.html
+
+install netcat
+$sudo apt-get install netcat
+stop bbb temporarily to test ports
+$sudo bbb-conf --stop
+
+ This frees up the ports we want to test. We can now run netcat to listen on ports and try connecting from an external computer.
+As root, run the following command:
+$ netcat -l 443
+
+netcat is now going to echo to the terminal any text it receives on port 443 Keep this open until your finished testing the port(you can quit the command later using Ctrl-c).
+
+Next, on a second computer that is external to the firewall – that is, it must go through the firewall to access the BigBlueButton server – install netcat as well.
+Replace EXTERNAL_HOST_NAME with the hostname of your firewall, run the following command
+SSH to another instance
+install netcat
+$sudo -i
+$sudo apt-get install netcat
+$ netcat EXTERNAL_HOST_NAME 443
+$ netcat mywishlake.com 443
+Type TEST then press enter
+
+look at the first instance command line. the TEST word should pop out under the active netcat -l 443
+
+Repeat this for testing port 80
+on BBB server instance command line
+$netcat -l 80
+
+on second server instance command line
+$netcat mywishlake.com 80
+type TEST80 then press enter 
+
+That covers the TCP/IP ports. Next, we need to test that UDP connections in the range 16384-32768 are forwarded as well. On your BigBlueButton server, run the following netcat command to listen for incoming data via UDP on port 17000 (here, we’re picking a port in the range 16384-32768).
+On BBB server instance command line
+$ netcat -u -l 17000
+
+On second server instance command line
+syntax : $ netcat -u EXTERNAL_HOST_NAME 17000
+$ netcat -u mywishlake.com 17000
+type TEST17000 then press enter
+
+To enable the BigBlueButton server to connect to itself using the external hostname, edit file /etc/hosts and add the line
+EXTERNAL_IP_ADDRESS EXTERNAL_HOST_NAME
+
+where EXTERNAL_IP_ADDRESS with the external IP of your firewall and EXTERNAL_HOST_NAME with the external hostname of your firewall. For example, using the configuration in the above diagram, the addition to /etc/hosts would be
+52.74.221.161 mywishlake.com
+
+At this point, proceed with the installation of BigBlueButton and, after the install is finished, configure BigBlueButton to use your firewall using the steps in the next section.
+https://docs.bigbluebutton.org/2.2/install.html
+it seems I have already done this. As seen above
+
+I tried to restart the server
+$ sudo bbb-conf --restart
+
+it printed out 1 error
+Error: Unable to connect to port 1935 (RTMP) on mywishlake.com
+
+# Warning: The API demos are installed and accessible from:
+#
+#    http://mywishlake.com
+#
+# and
+#
+#    http://mywishlake.com/demo/demo1.jsp
+#
+# These API demos allow anyone to access your server without authentication
+# to create/manage meetings and recordings. They are for testing purposes only.
+# If you are running a production system, remove them by running:
+#
+#    apt-get purge bbb-demo
+
+I decided to ignore this first
+
+Update FreeSWITCH
+With the firewall configured to forward incoming connections to the BigBlueButton server, the next step is to configure FreeSWITCH to bind to the firewall’s external IP address.
+
+Edit the following files and substitute EXTERNAL_IP_ADDRESS for the external IP address (not the external hostname).
+
+Edit /opt/freeswitch/conf/vars.xml, and change
+
+<X-PRE-PROCESS cmd="set" data="external_rtp_ip=stun:stun.freeswitch.org"/>
+
+To
+
+<X-PRE-PROCESS cmd="set" data="external_rtp_ip=EXTERNAL_IP_ADDRESS"/>
+<X-PRE-PROCESS cmd="set" data="external_rtp_ip=52.74.221.161"/>
+
+Change
+
+<X-PRE-PROCESS cmd="set" data="external_sip_ip=stun:stun.freeswitch.org"/>
+
+To
+
+<X-PRE-PROCESS cmd="set" data="external_sip_ip=EXTERNAL_IP_ADDRESS"/>
+<X-PRE-PROCESS cmd="set" data="external_sip_ip=52.74.221.161"/>
+
+
+Next, edit /opt/freeswitch/conf/sip_profiles/external.xml and change
+$sudo nano /opt/freeswitch/conf/sip_profiles/external.xml
+
+    <param name="ext-rtp-ip" value="$${local_ip_v4}"/>
+    <param name="ext-sip-ip" value="$${local_ip_v4}"/>
+
+to
+
+    <param name="ext-rtp-ip" value="$${external_rtp_ip}"/>
+    <param name="ext-sip-ip" value="$${external_sip_ip}"/>
+
+
+Next, edit /usr/share/red5/webapps/sip/WEB-INF/bigbluebutton-sip.properties, and make sure the values of bbb.sip.app.ip and freeswitch.ip have the internal IP address.
+$sudo nano /usr/share/red5/webapps/sip/WEB-INF/bigbluebutton-sip.properties
+
+bbb.sip.app.ip=<internal_ip>
+bbb.sip.app.port=5070
+
+freeswitch.ip=<internal_ip>
+freeswitch.port=5060
+
+Edit /etc/bigbluebutton/nginx/sip.nginx to connect to the external IP address.
+$sudo nano /etc/bigbluebutton/nginx/sip.nginx
+If you have configured SSL, use port 7443:
+
+location /ws {
+        proxy_pass https://EXTERNAL_IP_ADDRESS:7443;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_read_timeout 6h;
+        proxy_send_timeout 6h;
+        client_body_timeout 6h;
+        send_timeout 6h;
+}
+
+
+If you have the HTML5 client installed, you may need to a few more changes. If enableListenOnly is set to true in /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml, as in
+
+$ grep enableListenOnly /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml
+    enableListenOnly: true
+
+to see internal IP
+$sudo bbb-conf --check
+or you can just look at the title bar of your BBB server's command line that is the Local IP
+or go to EC2 instance in AWS console and look for Private IPv4 that is the local IP
+my internal IP address = 172.31.13.186
+
+check settings.yml
+$grep enableListenOnly /usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml 
+end the result is
+enableListenOnly: true
+
+then Kurento is providing a listen only audio stream for users of the HTML5 client.
+In this case, edit /usr/local/bigbluebutton/bbb-webrtc-sfu/config/default.yml change the value to ip to match the external IP address of the server, and the value of sip_ip to match the internal IP address of the server (where FreeSWITCH is listening to port 5066). For example, if the servers external IP address is 203.0.113.1 and the internal IP address is 172.30.1.145 then edit default.yml and change the values for ip and sip_ip as follows:
+
+freeswitch:
+    ip: 203.0.113.1
+    sip_ip: 172.30.1.145
+    port: 5066
+
+$sudo nano /usr/local/bigbluebutton/bbb-webrtc-sfu/config/default.yml
+External IP address = 52.74.221.161
+Internal IP address = 172.31.13.186
+
+end of section 3
+
+/////////////////////////////////////
+///////// Section 4  ///////////////
+////////////////////////////////////
+instance used bluewhale 2.2.3 upto section 3
+
+Next, change the value of sip+ip, you also need to Setup Kurento to use a STUN server
+https://docs.bigbluebutton.org/2.2/configure-firewall.html
+
+Extra steps when server is behind NAT
+https://docs.bigbluebutton.org/2.2/configure-firewall.html#extra-steps-when-server-is-behind-nat
+
+The HTML5 client uses the kurento media server to send/receive WebRTC video streams. If you are installing on a BigBlueButton server behind a firewall that uses network address translation (NAT), you need to give kurento access to an external STUN server (which stans for Session Traversal of UDP through NAT). A STUN server will help Kurento determine its external address when behind NAT.
+
+You’ll find a list of publicly available STUN servers at the kurento documentation.
+
+list of Public Kurento servers
+https://kurento.readthedocs.io/en/stable/doc/admin_guide.html#public-STUN-servers-available that use port 19302
+173.194.66.127:19302
+173.194.71.127:19302
+74.125.200.127:19302
+74.125.204.127:19302
+173.194.72.127:19302
+
+To configure Kurento to use a STUN server from the above list, you need to edit /etc/kurento/modules/kurento/WebRtcEndpoint.conf.ini and uncomment and assign values for stunServerAddress and stunServerPort. 
+
+For example, to use the STUN server at 64.233.177.127 with port 19302, edit the lines with stunServerAddress and stunServerPort as follows:
+
+stunServerAddress=64.233.177.127
+stunServerPort=19302
+
+$sudo nano /etc/kurento/modules/kurento/WebRtcEndpoint.conf.ini
+uncomment stunServerAddress=
+I used 173.194.66.127:19302 pair above
+stunServerAddress=173.194.66.127
+uncomment stunServerPort=
+stunServerPort=19302
+
+it will look like this
+stunServerAddress=173.194.66.127
+stunServerPort=19302
+
+To test selected Public Stun Server
+visit https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
+under ICE servers, type the stunServer IPv4 in the "STUN or TURN URI" fill up box
+You don't need to fill up the TURN username and TURN password
+
+under ICE options, click "Gather candidates" button
+This would print a list
+If you can see entries under Component Type having "srflx" that means the TURN server works well
+
+#If you test a STUN server, it works if you can gather a candidate with type "srflx". If you test a TURN server, it works if you can gather a candidate with type "relay".
+
+
+After making the above changes, restart BigBlueButton.
+sign in as root
+$sudo -i
+$ bbb-conf --restart
+
+To test, launch FireFox and try connecting to your BigBlueButton server and join the audio. If you see the words ‘[ WebRTC Audio ]’ in the lower right-hand corner, it worked.
+
+If it didn’t work, there are two likely error messages when you try to connect with audio.
+
+Detected the following WebRTC issue: Error 1002: Could not make a WebSocket connection. Do you want to try Flash instead?
+To solve this, find above line in this site https://docs.bigbluebutton.org/2.2/configure-firewall.html
+
+I missed some steps which you will see later
+back to
+Configure FreeSWITCH for using SSL
+http://docs.bigbluebutton.org/11install.html#configuring-ssl-on-your-bigbluebutton-server
+which should really come next to "Configure nginx to use HTTPSAnchor link for: configure nginx to use https"
+
+Edit the file /opt/freeswitch/conf/sip_profiles/external.xml and look for a line containing “ws-binding”. Change the line so it matches the following (note the change of ws-binding to wss-binding and port 5066 to 7443).
+
+<param name="tls-version" value="$${sip_tls_version}"/>
+<param name="wss-binding" value=":7443"/>
+
+$sudo nano /opt/freeswitch/conf/sip_profiles/external.xml
+press CTRL+W to find "ws-binding"
+
+
+If you have a firewall on your server and have opened port 5066, change the rule to now open port 7443 instead.
+
+To check for all open ports
+$sudo ufw status
+This will list all ports that are open
+To open port 7443
+$sudo ufw allow 7443
+To check
+$sudo ufw status
+
+Next, the websocket forwarding address in nginx. Edit the file /etc/bigbluebutton/nginx/sip.nginx and change the protocol and port on the proxy_pass line as shown:
+
+location /ws {
+  proxy_pass https://203.0.113.1:7443;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+  proxy_read_timeout 6h;
+  proxy_send_timeout 6h;
+  client_body_timeout 6h;
+  send_timeout 6h;
+}
+
+$sudo nano /etc/bigbluebutton/nginx/sip.nginx
+change the "http" to "https"
+double check that it uses port 7433 
+
+
+Configure BigBlueButton to load session via HTTPS
+
+With nginx now configured to use SSL, the next step is to configure FreeSWITCH to use HTTPS for initiating an audio connection.
+
+Edit /var/lib/tomcat7/webapps/bigbluebutton/WEB-INF/classes/bigbluebutton.properties and update the property bigbluebutton.web.serverURL to use HTTPS:
+
+#----------------------------------------------------
+# This URL is where the BBB client is accessible. When a user successfully
+# enters a name and password, she is redirected here to load the client.
+bigbluebutton.web.serverURL=https://bigbluebutton.example.com
+
+
+$sudo nano /var/lib/tomcat7/webapps/bigbluebutton/WEB-INF/classes/bigbluebutton.properties
+
+It will open a blank window
+But it also says that the file does not exist
+But if you find the same file in the drive
+$sudo find / -name bigbluebutton.properties
+It will print to different locations
+/usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+/var/lib/red5/webapps/bigbluebutton/WEB-INF/bigbluebutton.properties
+
+but not the tomcat7 path
+and when I try to find the path
+/cd /var/lib/tomcat7/webapps/bigbluebutton/WEB-INF/classes
+It print an error
+saying the file 
+No such file or directory
+
+but when I search for the tomcat7 directory, 
+$sudo find / -type d -name "tomcat7"
+it prints out results
+/usr/share/doc/tomcat7
+/usr/share/tomcat7
+/etc/tomcat7
+/var/log/tomcat7
+/var/lib/tomcat7
+/var/cache/tomcat7
+
+Meaning tomcat7 is installed
+but when I checked what is inside /var/lib/tomcat7
+$cd /var/lib/tomcat7
+It shows it has the webapps directory but the webapps directory doesn't have the bigbluebutton folder. I think I still need to install something so that the bigbluebutton folder will be installed in this directory
+
+but when I run system check of bigbluebutton
+sign as root user
+$sudo -i
+run the bbb system check
+$bbb-conf --check
+the only real error in printed out is
+Error: Unable to connect to port 1935 (RTMP) on mywishlake.com
+So iI think there is nothing wrong in my tomcat7 directory.
+I'll have to go back on this one.
+
+end of section 4
+
+////////////////////////////////////////////////////////////
+///////////// Section 5   ////////////////////////////
+/////////////////////////////////////////////////////
+continuing instance bluewhalev2.2.3  06/08/2020
+
+Continuation of Configure BigBlueButton to load session via HTTPS
+
+Next, edit the file /usr/share/red5/webapps/screenshare/WEB-INF/screenshare.properties and update the property jnlpUrl and jnlpFile to HTTPS:
+
+streamBaseUrl=rtmp://bigbluebutton.example.com/screenshare
+jnlpUrl=https://bigbluebutton.example.com/screenshare
+jnlpFile=https://bigbluebutton.example.com/screenshare/screenshare.jnlp
+
+$sudo nano /usr/share/red5/webapps/screenshare/WEB-INF/screenshare.properties
+
+You must also update the file /var/www/bigbluebutton/client/conf/config.xml to tell the BigBlueButton client to load components via HTTPS. You can do the update with a single command
+
+# sudo sed -e 's|http://|https://|g' -i /var/www/bigbluebutton/client/conf/config.xml
+
+If you would ever need to revert this change, you can run the reverse command:
+
+# sudo sed -e 's|https://|http://|g' -i /var/www/bigbluebutton/client/conf/config.xml
+
+Next, modify the creation of recordings so they are served via HTTPS. Edit /usr/local/bigbluebutton/core/scripts/bigbluebutton.yml and change the value for playback_protocol as follows:
+
+playback_protocol: https
+
+$sudo nano /usr/local/bigbluebutton/core/scripts/bigbluebutton.yml
+
+If you have installed the API demos in step 4, edit /var/lib/tomcat7/webapps/demo/bbb_api_conf.jsp and change the value of BigBlueButtonURL use HTTPS.
+
+// This is the URL for the BigBlueButton server
+String BigBlueButtonURL = "https://bigbluebutton.example.com/bigbluebutton/";
+
+$sudo nano /var/lib/tomcat7/webapps/demo/bbb_api_conf.jsp
+Double check the domain name.. in my current instance, it is already updated to my chose domain.
+
+Finally, to apply all of the configuration changes made, you must restart all components of BigBlueButton:
+log in as root user first
+$sudo -i
+restart bigbluebutton
+$bbb-conf --restart
+It will restart, so far there is only one real error it prints out
+"Error: Unable to connect to port 1935 (RTMP) on mywishlake.com"
+I will have to ignore this for now.
+
+Test your HTTPS configurationAnchor link for: test your https configuration
+
+In order to ensure you didn’t make any mistakes that could cause security compromises, please test your HTTPS configuration. A well-respected site that can do a series of automated tests is https://www.ssllabs.com/ssltest/ - simply enter your server’s hostname, optionally check the “Do not show results” check box if you would like to keep it private, then Submit.
+
+I tested the site for HTTPS configuration and it was rated B.
+Seems ok
+
+Now I visited the my site
+enter your (host name) domain name in the url box of your browser
+type mywishlake.com
+It directs you to the usual index.html landing page of bigbluebutton.
+Now there is something new here.
+In the previous sections, when I try the API demos, Entering a name and by clicking the "Join" button  it will just lead to an error page.
+But now upon doing the same action, it now leads me to the real demo bigbluebutton greenlight frontend, and it works perfectly. Now, I should try to find out how to makethe real greenlight frontend work.
+
+I am browsing the main install webpage.. As I was reviewing what I have already done, while also checking what to do next.. I reach this next step that I haven't done yet.
+that is
+
+Final steps
+https://docs.bigbluebutton.org/2.2/install.html#minimum-server-requirements
+Specifically the "Set up a TURN server"
+So let's go there
+
+https://docs.bigbluebutton.org/2.2/setup-turn-server.html
+you will need to create another new instance separately for this installation.
+ 
+
+Setup a TURN server
+https://docs.bigbluebutton.org/2.2/setup-turn-server.html
+The TURN protocol is designed to allow UDP-based communication flows like WebRTC to bypass NAT or firewalls by having the client connect to the TURN server, and then have the TURN server connect to the destination on their behalf.
+
+Using a TURN server under your control improves the success of connections to BigBlueButton and also improves user privacy, since they will no longer be sending IP address information to a public STUN server.
+
+Required HardwareAnchor link for: required hardware
+
+The TURN protocol is not CPU or memory intensive. Additionally, since it’s only used during connection setup (for STUN) and as a fallback for users who would otherwise be unable to connect, the bandwidth requirements aren’t particularly high. For a moderate number of BigBlueButton servers, a single small VPS is usually sufficient.
+
+Having multiple IP addresses may improve the results when using STUN with certain types of firewalls, but is not usually necessary.
+
+Having the server behind NAT (for example, on Amazon EC2) is OK, but all incoming UDP and TCP connections on any port must be forwarded and not firewalled.
+
+
+Required Software
+OS: Ubuntu 18.04
+Exclusive port 443 (SSH) - that is why no additional web applications or dashboard sofware should be installed in the same instance
+
+create a new EC2 instance
+Ubuntu 18.04
+t2.micro
+Public IP: 18.140.218.197
+Private IP: 172.31.43.246
+Security Group
+Added SSH 22 rule
+      TCP HTTPS 443 rule  anywhere
+	TCP HTTP 80 rule   anywhere
+	UDP 3478 rule      anywhere
+	TCP 3478 rule      anywhere
+	UDP 49152-65535 rule    anywhere
+
+$sudo apt-get update
+$sudo apt-get install coturn
+
+Note: coturn will not automatically start until configuration is applied (see below).
+
+Required DNS Entry
+You need to setup a fully qualified domain name that resolves to the external IP address of your turn server. You’ll used this domain name to generate a TLS certificate using Let’s Encrypt (next section).
+
+FQDN defined
+FQDN has three parts <hostname>.<domain>.<top-level domain>
+eg. www.apple.com
+FQDN should possess all this three parts. 
+eg. www.apple.com - has an Public IP of 1.1.1.1
+    shop.apple.com - has also the same Public IP 1.1.1.1, meaning it is registered to the same server as www.apple.com and is just another webpage stored in the  server, therefore shop is not a host name but a subdomain. Which make shop.apple.com not an FQDN
+    music.apple.com - has a different Public IP 2.2.2.2, meaning it uses a separate server, there fore music is a host name, which makes music.apple.com a FQDN.
+To summarize look at the Public IP address of the domain name, if it is unique to it, then it is a FQDN.
+
+For this session,
+I will create a hosted zone in Route 53: turn.mywishlake.com
+Click or open the turn.mywishlake.com
+Click Create Record Set
+Leave the Name as is
+Type: A- IPv4 address
+Under Value - copy paste the Public IP of the turn instance server (18.140.218.197)
+Click Create
+Still under turn.mywishlake.com,  copy the entries under 'NS'
+Then Press 'Back to Hosted Zone'
+Click mywishlake.com
+Click 'Create Record Set'
+Under name add - 'turn' to make it turn.mywishlake.com
+Type click drop down, select NS -Name Server
+Paste the copied entries in the previous steps
+Routing Policy: Simple
+Click 'Create'
+You have successfully created a FQDN
+
+Required Ports
+done in Security groups in EC2
+
+Generating TLS certificates
+You can use certbot from Let’s Encrypt to easily generate free TLS certificates. To setup certbot enter the following commands on your TURN server (not your BigBlueButton server).
+
+$ sudo add-apt-repository ppa:certbot/certbot
+$ sudo apt-get update
+$ sudo apt-get install certbot
+
+You can then run a certbot command like the following to generate the certificate, replacing turn.example.com with the domain name of your TURN server:
+syntax $ sudo certbot certonly --standalone --preferred-challenges http \
+    --deploy-hook "systemctl restart coturn" \
+    -d turn.example.com	
+
+$ sudo certbot certonly --standalone --preferred-challenges http \
+    --deploy-hook "systemctl restart coturn" \
+    -d turn.mywishlake.com
+Answer to following questions
+Email add:
+Agree Terms of Service
+No to share email address
+It now prints Congratulations for the certificate
+
+Current versions of the certbot command set up automatic renewal by default. Note that when certbot renews the certificate, it will restart coturn so coturn will start to use the updated certificate files. This will interrupt any ongoing TURN connections. You may wish to change the schedule of certbot renewals or disable automatic renewal if this is a concern.
+
+Automatically renewed SSL Certificate
+The Let’s Encrypte certificates are good for 90 days and can be automatically renewed. To automatically request a renewal once a week, edit the crontab file for root.
+
+$ sudo crontab -e
+
+And add the following two lines at the bottom:
+
+30 2 * * 7 /usr/bin/certbot renew >> /var/log/le-renew.log
+35 2 * * 7 /bin/systemctl reload nginx
+These two directives will execute the certbot renew command every Sunday at 2:30 am, and then reload Nginx at 2:35am (so the renewed certificate will be used). The output will be piped to a log file located at /var/log/le-renewal.log, so you can always check it later.
+
+
+Configure coturn
+
+coturn configuration is stored in the file /etc/turnserver.conf. There are a lot of options available, all documented in comments in that file. We include a sample configuration below with comments indicating the recommended settings, with some notes in locations where customization is required.
+
+
+You can replace the contents /etc/turnserver.conf with this file and make two changes:
+
+    -Replace turn.example.com with the hostname of your TURN server, and
+    -Replace <random value> to a random value for a shared secret (instructions for generating a new secret are in a comment in the file).
+
+# Example coturn configuration for BigBlueButton
+
+# These are the two network ports used by the TURN server which the client
+# may connect to. We enable the standard unencrypted port 3478 for STUN,
+# as well as port 443 for TURN over TLS, which can bypass firewalls.
+listening-port=3478
+tls-listening-port=443
+
+# If the server has multiple IP addresses, you may wish to limit which
+# addresses coturn is using. Do that by setting this option (it can be
+# specified multiple times). The default is to listen on all addresses.
+# You do not normally need to set this option.
+#listening-ip=172.17.19.101
+
+# If the server is behind NAT, you need to specify the external IP address.
+# If there is only one external address, specify it like this:
+#external-ip=172.17.19.120
+# If you have multiple external addresses, you have to specify which
+# internal address each corresponds to, like this. The first address is the
+# external ip, and the second address is the corresponding internal IP.
+#external-ip=172.17.19.131/10.0.0.11
+#external-ip=172.17.18.132/10.0.0.12
+
+# Fingerprints in TURN messages are required for WebRTC
+fingerprint
+
+# The long-term credential mechanism is required for WebRTC
+lt-cred-mech
+
+# Configure coturn to use the "TURN REST API" method for validating time-
+# limited credentials. BigBlueButton will generate credentials in this
+# format. Note that the static-auth-secret value specified here must match
+# the configuration in BigBlueButton's turn-stun-servers.xml
+# You can generate a new random value by running the command:
+#   openssl rand -hex 16
+use-auth-secret
+static-auth-secret=<random value>
+
+# If the realm value is unspecified, it defaults to the TURN server hostname.
+# You probably want to configure it to a domain name that you control to
+# improve log output. There is no functional impact.
+realm=example.com
+
+# Configure TLS support.
+# Adjust these paths to match the locations of your certificate files
+cert=/etc/letsencrypt/live/turn.example.com/fullchain.pem
+pkey=/etc/letsencrypt/live/turn.example.com/privkey.pem
+# Limit the allowed ciphers to improve security
+# Based on https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+cipher-list="ECDH+AESGCM:ECDH+CHACHA20:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS"
+
+# Enable longer DH TLS key to improve security
+dh2066
+
+# All WebRTC-compatible web browsers support TLS 1.2 or later, so disable
+# older protocols
+no-tlsv1
+no-tlsv1_1
+
+# Log to a single filename (rather than new log files each startup). You'll
+# want to install a logrotate configuration (see below)
+log-file=/var/log/coturn.log
+
+# To enable single filename logs you need to enable the simple-log flag
+simple-log
+
+
+Edited script
+Replace turn.example.com with the hostname of your TURN server,
+
+# Example coturn configuration for BigBlueButton
+
+# These are the two network ports used by the TURN server which the client
+# may connect to. We enable the standard unencrypted port 3478 for STUN,
+# as well as port 443 for TURN over TLS, which can bypass firewalls.
+listening-port=3478
+tls-listening-port=443
+
+# If the server has multiple IP addresses, you may wish to limit which
+# addresses coturn is using. Do that by setting this option (it can be
+# specified multiple times). The default is to listen on all addresses.
+# You do not normally need to set this option.
+#listening-ip=172.17.19.101
+
+# If the server is behind NAT, you need to specify the external IP address.
+# If there is only one external address, specify it like this:
+#external-ip=172.17.19.120
+# If you have multiple external addresses, you have to specify which
+# internal address each corresponds to, like this. The first address is the
+# external ip, and the second address is the corresponding internal IP.
+#external-ip=172.17.19.131/10.0.0.11
+#external-ip=172.17.18.132/10.0.0.12
+
+# Fingerprints in TURN messages are required for WebRTC
+fingerprint
+
+# The long-term credential mechanism is required for WebRTC
+lt-cred-mech
+
+# Configure coturn to use the "TURN REST API" method for validating time-
+# limited credentials. BigBlueButton will generate credentials in this
+# format. Note that the static-auth-secret value specified here must match
+# the configuration in BigBlueButton's turn-stun-servers.xml
+# You can generate a new random value by running the command:
+#   openssl rand -hex 16
+use-auth-secret
+static-auth-secret=<bedb5eb78858ee4d624b3ed4d9ca84ea>
+
+# If the realm value is unspecified, it defaults to the TURN server hostname.
+# You probably want to configure it to a domain name that you control to
+# improve log output. There is no functional impact.
+realm=example.com
+
+# Configure TLS support.
+# Adjust these paths to match the locations of your certificate files
+cert=/etc/letsencrypt/live/turn.mywishlake.com/fullchain.pem
+pkey=/etc/letsencrypt/live/turn.mywishlake.com/privkey.pem
+# Limit the allowed ciphers to improve security
+# Based on https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+cipher-list="ECDH+AESGCM:ECDH+CHACHA20:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS"
+
+# Enable longer DH TLS key to improve security
+dh2066
+
+# All WebRTC-compatible web browsers support TLS 1.2 or later, so disable
+# older protocols
+no-tlsv1
+no-tlsv1_1
+
+# Log to a single filename (rather than new log files each startup). You'll
+# want to install a logrotate configuration (see below)
+log-file=/var/log/coturn.log
+
+# To enable single filename logs you need to enable the simple-log flag
+simple-log
+
+
+Replace <random value> to a random value for a shared secret (instructions for generating a new secret are in a comment in the file).
+
+https://tools.ietf.org/html/draft-uberti-behave-turn-rest-00
+
+   To address this problem, this document proposes an API that can be
+   used to retrieve ephemeral TURN credentials from a web service.
+   These credentials can then be used as long-term credentials with a
+   standard TURN server with a custom authentication module.  For
+   simplicity, the design has been kept intentionally stateless; the
+   only interaction needed between the web service and the TURN service
+   is to share a secret key.
+
+I searched the word "random" in the Sample Turn Server Config for BigBlueButton given
+And it directed me to the part
+# Configure coturn to use the "TURN REST API" method for validating time-
+# limited credentials. BigBlueButton will generate credentials in this
+# format. Note that the static-auth-secret value specified here must match
+# the configuration in BigBlueButton's turn-stun-servers.xml
+# You can generate a new random value by running the command:
+#   openssl rand -hex 16
+use-auth-secret
+static-auth-secret=<random value>
+
+$openssl rand -hex 16
+random value generated: bedb5eb78858ee4d624b3ed4d9ca84ea
+$sudo nano /etc/turnserver.conf
+copy and paste the newly edited script above at the bottom of the turnserver.conf file
+Save the file
+
+Copy the secret to turn-stun-servers.xml
+Find the file
+$sudo find / -name turn-stun-servers.xml
+But prints nothing, meaning there is no such file
+
+This is because you should find it the BBB instance server not the TURN server.
+
+
+Configure Log Rotation
+To rotate the logs for coturn, install the following configuration file to /etc/logrotate.d/coturn
+
+/var/log/coturn.log
+{
+    rotate 30
+    daily
+    missingok
+    notifempty
+    delaycompress
+    compress
+    postrotate
+    systemctl kill -sHUP coturn.service
+    endscript
+}
+
+$sudo nano /etc/logrotate.d/coturn
+this will create a new file
+paste the script into it then save
+You should now see it under /etc/logrotate.d
+
+
+Enabling the coturn serviceAnchor link for: enabling the coturn service
+
+The ubuntu package for coturn requires that you edit a file to enable startup. Edit the file /etc/default/coturn and ensure the following line is uncommented:
+
+TURNSERVER_ENABLED=1
+
+$sudo nano /etc/default/coturn
+uncomment TURNSERVER_ENABLED=1   
+Then save
+
+You can then start the coturn service by running
+
+$ systemctl start coturn
+
+it printed out
+Authentication is required to start 'coturn.service'.
+Authenticating as: Ubuntu (ubuntu)
+Password:
+I don't know the password, so I just pressed enter
+And it printed
+polkit-agent-helper-1: pam_authenticate failed: Authentication failure
+==== AUTHENTICATION FAILED ===
+
+So now I try to execute the command as root
+$sudo systemctl start coturn
+And it returns nothing, meaning it run successfully
+
+
+
+Configure BigBlueButton to use the coturn server
+
+You must configure bbb-web so that it will provide the list of turn servers to the web browser. Edit the file /usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml using the contents below and make edits:
+
+    -replace both instances of turn.example.com with the hostname of the TURN server, and
+    -replace <random value> with the secret you configured in turnserver.conf.
+
+Go to your BBB instance server
+$sudo nano /usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="stun0" class="org.bigbluebutton.web.services.turn.StunServer">
+        <constructor-arg index="0" value="stun:turn.example.com"/>
+    </bean>
+
+
+    <bean id="turn0" class="org.bigbluebutton.web.services.turn.TurnServer">
+        <constructor-arg index="0" value="<random value>"/>
+        <constructor-arg index="1" value="turns:turn.example.com:443?transport=tcp"/>
+        <constructor-arg index="2" value="86400"/>
+    </bean>
+    
+    <bean id="turn1" class="org.bigbluebutton.web.services.turn.TurnServer">
+        <constructor-arg index="0" value="<random value>"/>
+        <constructor-arg index="1" value="turn:turn.example.com:443?transport=tcp"/>
+        <constructor-arg index="2" value="86400"/>
+    </bean>
+
+    <bean id="stunTurnService"
+            class="org.bigbluebutton.web.services.turn.StunTurnService">
+        <property name="stunServers">
+            <set>
+                <ref bean="stun0"/>
+            </set>
+        </property>
+        <property name="turnServers">
+            <set>
+                <ref bean="turn0"/>
+                <ref bean="turn1"/>
+            </set>
+        </property>
+    </bean>
+</beans>
+
+
+
+random value generated: bedb5eb78858ee4d624b3ed4d9ca84ea
+
+Edited script
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="stun0" class="org.bigbluebutton.web.services.turn.StunServer">
+        <constructor-arg index="0" value="stun:turn.mywishlake.com"/>
+    </bean>
+
+
+    <bean id="turn0" class="org.bigbluebutton.web.services.turn.TurnServer">
+        <constructor-arg index="0" value="<bedb5eb78858ee4d624b3ed4d9ca84ea>"/>
+        <constructor-arg index="1" value="turns:turn.mywishlake.com:443?transport=tcp"/>
+        <constructor-arg index="2" value="86400"/>
+    </bean>
+    
+    <bean id="turn1" class="org.bigbluebutton.web.services.turn.TurnServer">
+        <constructor-arg index="0" value="<random value>"/>
+        <constructor-arg index="1" value="turn:turn.example.com:443?transport=tcp"/>
+        <constructor-arg index="2" value="86400"/>
+    </bean>
+
+    <bean id="stunTurnService"
+            class="org.bigbluebutton.web.services.turn.StunTurnService">
+        <property name="stunServers">
+            <set>
+                <ref bean="stun0"/>
+            </set>
+        </property>
+        <property name="turnServers">
+            <set>
+                <ref bean="turn0"/>
+                <ref bean="turn1"/>
+            </set>
+        </property>
+    </bean>
+</beans>
+
+
+After doing this, it won't save. Because the directories and files being talked about doesn't exist. I will have to get back to this. It seems like I have do some other things. 
+
+Answer-- because I should be doing this step in the other instance, which is the BBB instance server. Once I switched and entered the commands, there they were.
+
+first since I need to replace the whole contents of turn-stun-servers.xml, since it is very long. I will just have to delete it. And make a new file with the same file name but different content
+
+$cd /usr/share/bbb-web/WEB-INF/classes/spring/
+delete file with confirmation
+$sudo rm -i turn-stun-servers.xml
+
+now make a new version of the file
+$sudo nano /usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml
+paste the edited script and save
+
+
+I tried to restart the server
+$sudo bbb-conf --restart
+It print a new error page and when I visit the the bbb host name, and loads the index.html, but when I try the demo, it give an error page Status Code 	500
+Error: Could not connect to the configured hostname/IP address
+#
+#    http://mywishlake.com/
+#
+# If your BigBlueButton server is behind a firewall, see FAQ.
+
+# Error: Unable to connect to port 1935 (RTMP) on mywishlake.com
+
+and then I run this command
+$sudo bbb-conf --check
+it prints a  new error
+Not running:  tomcat7 or grails LibreOffice
+
+I have read reported errors for this.
+Visit this link: https://github.com/bigbluebutton/bbb-install/issues/98
+
+end of section 5
+
+//////////////////////////////////
+////////// Section 6  ///////////
+/////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
