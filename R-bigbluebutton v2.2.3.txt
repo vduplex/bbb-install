@@ -1157,9 +1157,6 @@ Visit this link: https://github.com/bigbluebutton/bbb-install/issues/98
 
 end of section 5
 
-//////////////////////////////////
-////////// Section 6  ///////////
-/////////////////////////////////
 
 
 
